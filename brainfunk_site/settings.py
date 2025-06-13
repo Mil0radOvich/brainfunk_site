@@ -74,7 +74,7 @@ WSGI_APPLICATION = 'brainfunk_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': BASE_DIR / 'db.sql',
     }
 }
