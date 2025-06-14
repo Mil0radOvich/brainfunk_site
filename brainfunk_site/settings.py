@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-z5-h6hus%b@gh15a9v!c0w)h+i%+8!=1y@_tofcobf5do*h(^g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -75,8 +75,8 @@ WSGI_APPLICATION = 'brainfunk_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sql',
-        'NAME': BASE_DIR / 'db.sql',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
