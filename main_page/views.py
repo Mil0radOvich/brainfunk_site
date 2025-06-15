@@ -18,3 +18,6 @@ def about(request):
 
 def contact(request):
     return render(request, 'main_page/contact.html', {'title': 'Контакты'})
+
+def courses_catalog(request):
+    return render(request, 'main_page/courses_catalog.html', {'title': 'Каталог курсов'})

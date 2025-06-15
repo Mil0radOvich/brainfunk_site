@@ -23,4 +23,5 @@ urlpatterns = [
     path('', views.index),
     path('about', views.about),
     path('contact', views.contact),
+    path('courses_catalog', views.courses_catalog),
 ]

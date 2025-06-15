@@ -1,0 +1,213 @@
+{% extends 'main_page/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Заголовок и фильтры -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="display-4" style="color: #6e3b8f;">Каталог курсов</h1>
+            <p class="lead" style="color: #a777e3;">Найдите идеальный курс для своего развития</p>
+        </div>
+        <div class="col-md-4">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Поиск курсов...">
+                <button class="btn" style="background-color: #c71585; color: white;">Найти</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Табы категорий -->
+    <ul class="nav nav-pills mb-5" id="coursesTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" style="background-color: #6e3b8f;" id="all-tab" data-bs-toggle="pill" data-bs-target="#all" type="button">Все курсы</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" style="color: #6e3b8f;" id="trending-tab" data-bs-toggle="pill" data-bs-target="#trending" type="button">В тренде</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" style="color: #6e3b8f;" id="new-tab" data-bs-toggle="pill" data-bs-target="#new" type="button">Новые</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" style="color: #6e3b8f;" id="discounts-tab" data-bs-toggle="pill" data-bs-target="#discounts" type="button">Акции</button>
+        </li>
+    </ul>
+
+    <!-- Контент табов -->
+    <div class="tab-content" id="coursesTabContent">
+        <div class="tab-pane fade show active" id="all" role="tabpanel">
+            <!-- Популярные курсы -->
+            <section class="mb-5">
+                <h2 class="mb-4" style="color: #c71585;">Популярные сейчас</h2>
+                <div class="row">
+                    {% for course in popular_courses %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="badge bg-danger position-absolute" style="top: 10px; right: 10px;">Топ-{{ forloop.counter }}</div>
+                            <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ course.title }}</h5>
+                                <p class="card-text">{{ course.short_description }}</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted"><i class="bi bi-people-fill"></i> {{ course.students_count }}</span>
+                                    <span class="badge" style="background-color: #a777e3;">{{ course.duration }} ч</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold" style="color: #6e3b8f;">{{ course.price }} ₽</span>
+                                    <span class="text-warning"><i class="bi bi-star-fill"></i> {{ course.rating }}</span>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <a href="#" class="btn w-100" style="background-color: #c71585; color: white;">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Все категории курсов -->
+            <section class="mb-5">
+                <h2 class="mb-4" style="color: #c71585;">Категории курсов</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 border-0" style="background-color: #f8e1f4;">
+                            <div class="card-body">
+                                <h3 class="card-title" style="color: #6e3b8f;">Программирование</h3>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #f8e1f4;">
+                                        Python
+                                        <span class="badge" style="background-color: #a777e3;">58 курсов</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #f8e1f4;">
+                                        JavaScript
+                                        <span class="badge" style="background-color: #a777e3;">42 курса</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #f8e1f4;">
+                                        Java
+                                        <span class="badge" style="background-color: #a777e3;">31 курс</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 border-0" style="background-color: #e6d4f7;">
+                            <div class="card-body">
+                                <h3 class="card-title" style="color: #6e3b8f;">Данные и AI</h3>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #e6d4f7;">
+                                        Data Science
+                                        <span class="badge" style="background-color: #a777e3;">33 курса</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #e6d4f7;">
+                                        Машинное обучение
+                                        <span class="badge" style="background-color: #a777e3;">28 курсов</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #e6d4f7;">
+                                        Generative AI
+                                        <span class="badge" style="background-color: #a777e3;">15 курсов</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Все курсы -->
+            <section>
+                <h2 class="mb-4" style="color: #c71585;">Все доступные курсы</h2>
+                <div class="row">
+                    {% for course in all_courses %}
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100 border-0">
+                            <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ course.title }}</h5>
+                                <p class="card-text text-muted">{{ course.author }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold" style="color: #6e3b8f;">{{ course.price }} ₽</span>
+                                    <span class="text-warning"><i class="bi bi-star-fill"></i> {{ course.rating }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Предыдущая</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#" style="background-color: #6e3b8f;">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#" style="color: #6e3b8f;">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#" style="color: #6e3b8f;">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" style="color: #6e3b8f;">Следующая</a>
+                        </li>
+                    </ul>
+                </nav>
+            </section>
+        </div>
+
+        <!-- Остальные табы (аналогично) -->
+        <div class="tab-pane fade" id="trending" role="tabpanel">
+            <!-- Контент для "В тренде" -->
+        </div>
+        <div class="tab-pane fade" id="new" role="tabpanel">
+            <!-- Контент для "Новые" -->
+        </div>
+        <div class="tab-pane fade" id="discounts" role="tabpanel">
+            <!-- Контент для "Акции" -->
+        </div>
+    </div>
+
+    <!-- Авторы курсов -->
+    <section class="my-5 py-4" style="background-color: #f3e5f5; border-radius: 15px;">
+        <h2 class="text-center mb-4" style="color: #6e3b8f;">Наши авторы</h2>
+        <div class="row">
+            {% for author in authors %}
+            <div class="col-md-3 col-6 mb-4">
+                <div class="card border-0 h-100 text-center bg-transparent">
+                    <img src="{{ author.photo.url }}" class="rounded-circle mx-auto" style="width: 100px; height: 100px; object-fit: cover;" alt="{{ author.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ author.name }}</h5>
+                        <p class="card-text text-muted">{{ author.courses_count }} курсов</p>
+                        <p class="card-text">{{ author.followers_count }} подписчиков</p>
+                        <a href="#" class="btn btn-sm" style="background-color: #a777e3; color: white;">Подписаться</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Партнеры -->
+    <section class="my-5">
+        <h2 class="text-center mb-4" style="color: #c71585;">Курсы от наших партнеров</h2>
+        <div class="row">
+            {% for partner in partners %}
+            <div class="col-md-2 col-4 mb-4 text-center">
+                <img src="{{ partner.logo.url }}" class="img-fluid" style="height: 50px;" alt="{{ partner.name }}">
+                <p class="mt-2 small">{{ partner.name }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<style>
+    .nav-pills .nav-link.active {
+        background-color: #6e3b8f !important;
+    }
+    .nav-pills .nav-link {
+        color: #6e3b8f;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        transition: transform 0.3s;
+        box-shadow: 0 10px 20px rgba(110, 59, 143, 0.1);
+    }
+</style>
+{% endblock %}
