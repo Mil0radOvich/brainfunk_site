@@ -1,0 +1,109 @@
+{% extends 'main_page/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="display-4" style="color: #6e3b8f;">Каталог курсов</h1>
+            <p class="lead" style="color: #a777e3;">Найдите идеальный курс для своего развития</p>
+        </div>
+        <div class="col-md-4">
+            <form method="get" class="input-group mb-3">
+                <input type="text" name="q" class="form-control" placeholder="Поиск курсов...">
+                <button class="btn" style="background-color: #c71585; color: white;">Найти</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Фильтры -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header" style="background-color: #6e3b8f; color: white;">
+                    Фильтры
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Категории</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for category in categories %}
+                        <li class="list-group-item">
+                            <a href="{% url 'course_list_by_category' category.slug %}" style="color: #6e3b8f;">
+                                {{ category.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    
+                    <h5 class="card-title mt-4">Уровень</h5>
+                    <div class="btn-group-vertical w-100">
+                        <a href="?level=beginner" class="btn btn-outline-primary text-start">Начинающий</a>
+                        <a href="?level=intermediate" class="btn btn-outline-primary text-start">Средний</a>
+                        <a href="?level=advanced" class="btn btn-outline-primary text-start">Продвинутый</a>
+                    </div>
+                    
+                    <h5 class="card-title mt-4">Сортировка</h5>
+                    <div class="btn-group-vertical w-100">
+                        <a href="?sort=popular" class="btn btn-outline-primary text-start">По популярности</a>
+                        <a href="?sort=rating" class="btn btn-outline-primary text-start">По рейтингу</a>
+                        <a href="?sort=newest" class="btn btn-outline-primary text-start">Новые</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Список курсов -->
+        <div class="col-md-9">
+            {% if popular_courses %}
+            <section class="mb-5">
+                <h2 class="mb-4" style="color: #c71585;">Популярные сейчас</h2>
+                <div class="row">
+                    {% for course in popular_courses %}
+                    {% include 'courses/_course_card.html' with course=course %}
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+            
+            <h2 class="mb-4" style="color: #c71585;">{% if category %}Курсы по категории "{{ category.name }}"{% else %}Все курсы{% endif %}</h2>
+            
+            <div class="row">
+                {% for course in page_obj %}
+                {% include 'courses/_course_card.html' with course=course %}
+                {% endfor %}
+            </div>
+            
+            <!-- Пагинация -->
+            {% if page_obj.has_other_pages %}
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" style="color: #6e3b8f;">Предыдущая</a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#" style="background-color: #6e3b8f;">{{ num }}</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}" style="color: #6e3b8f;">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" style="color: #6e3b8f;">Следующая</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
