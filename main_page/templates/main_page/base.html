@@ -160,6 +160,54 @@
                 background-color: rgb(119, 0, 134); /* Темнее синий цвет при наведении */
             }
 
+            .lesson-content {
+                font-size: 1.1rem;
+                line-height: 1.6;
+            }
+
+            .lesson-content img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 8px;
+                margin: 1rem 0;
+            }
+
+            .sticky-top {
+                z-index: 10;
+            }
+
+            .list-group-item.active {
+                background-color: #6e3b8f;
+                border-color: #6e3b8f;
+            }
+
+            /* Стили для блоков с кодом */
+            .code-block {
+                background: #f5f5f5;
+                border-radius: 4px;
+                padding: 1rem;
+                font-family: 'Courier New', monospace;
+                margin: 1rem 0;
+            }
+
+            /* Подсветка активного элемента в навигации */
+            .list-group-item.active {
+                background-color: #6e3b8f;
+                border-color: #6e3b8f;
+            }
+
+            /* Анимация при наведении на элементы урока */
+            .lesson-block {
+                transition: all 0.3s ease;
+                padding: 1rem;
+                border-radius: 8px;
+            }
+
+            .lesson-block:hover {
+                background-color: #f8f9fa;
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            }
+
         </style>
     </head>
 

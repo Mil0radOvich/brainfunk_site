@@ -18,7 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from main_page import views as main_views
-from courses.views import CourseListView, CourseDetailView, authors_view, partners_view
+from courses.views import CourseListView, CourseDetailView, authors_view, partners_view, CourseDetailView, lesson_detail
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
@@ -40,4 +40,6 @@ urlpatterns = [
     path('courses/partners/', partners_view, name='partners'),
     path('accounts/', include('allauth.urls')),
     path('profile/', views.profile),
+    path('<slug:course_slug>/', CourseDetailView.as_view(), name='course_detail'),
+    path('<slug:course_slug>/<slug:lesson_slug>/', lesson_detail, name='lesson_detail'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

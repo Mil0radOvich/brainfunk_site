@@ -1,0 +1,152 @@
+{% extends 'main_page/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a></li>
+                    <li class="breadcrumb-item active">{{ lesson.title }}</li>
+                </ol>
+            </nav>
+            
+            <h1 class="mb-4">{{ lesson.title }}</h1>
+            
+            {% for content in contents %}
+                <div class="lesson-block mb-5">
+                    <h3>{{ content.title }}</h3>
+                    
+                    {% if content.content_type == 'TEXT' and content.text_content %}
+                        <!-- Текстовый конспект -->
+                        <div class="card">
+                            <div class="card-body">
+                                {{ content.text_content.body|linebreaks }}
+                            </div>
+                        </div>
+                    
+                    {% elif content.content_type == 'VIDEO' and content.video_content %}
+                        <!-- Видео -->
+                        <div class="card">
+                            <div class="ratio ratio-16x9">
+                                <iframe src="{{ content.video_content.video_url }}" allowfullscreen></iframe>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">Длительность: {{ content.video_content.duration|time:"H:i:s" }}</small>
+                            </div>
+                        </div>
+                        {% if content.video_content.transcript %}
+                        <div class="card mt-3">
+                            <div class="card-header">Транскрипт видео</div>
+                            <div class="card-body">
+                                {{ content.video_content.transcript|linebreaks }}
+                            </div>
+                        </div>
+                        {% endif %}
+                    
+                    {% elif content.content_type == 'TASK' and content.code_task %}
+                        <!-- Практическое задание -->
+                        <div class="card">
+                            <div class="card-header bg-dark text-white">
+                                Практическое задание
+                            </div>
+                            <div class="card-body">
+                                <h5>Описание:</h5>
+                                <p>{{ content.code_task.description }}</p>
+                                
+                                <h5 class="mt-4">Ваше решение:</h5>
+                                <textarea class="form-control mb-3" rows="10" placeholder="Напишите ваш код здесь"></textarea>
+                                
+                                <button class="btn btn-primary">Проверить решение</button>
+                                <button class="btn btn-outline-secondary ms-2">Показать ответ</button>
+                            </div>
+                        </div>
+                    
+                    {% elif content.content_type == 'QUIZ' and content.quiz %}
+                        <!-- Тест -->
+                        <div class="card">
+                            <div class="card-header bg-dark text-white">
+                                Тест
+                            </div>
+                            <div class="card-body">
+                                {% if content.quiz.description %}
+                                    <p>{{ content.quiz.description }}</p>
+                                {% endif %}
+                                
+                                <form>
+                                    {% for question in content.quiz.questions.all %}
+                                        <div class="mb-4">
+                                            <h5>{{ question.text }}</h5>
+                                            
+                                            {% if question.question_type == 'MC' %}
+                                                <!-- Множественный выбор -->
+                                                <div class="list-group">
+                                                    {% for option in question.options.all %}
+                                                        <label class="list-group-item">
+                                                            <input class="form-check-input me-2" 
+                                                                   type="{% if question.options.filter(is_correct=True).count > 1 %}checkbox{% else %}radio{% endif %}" 
+                                                                   name="question_{{ question.id }}">
+                                                            {{ option.text }}
+                                                        </label>
+                                                    {% endfor %}
+                                                </div>
+                                            
+                                            {% elif question.question_type == 'CODE' %}
+                                                <!-- Написание кода -->
+                                                <textarea class="form-control mt-2" rows="5" 
+                                                          placeholder="Напишите ваш код здесь"></textarea>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                    
+                                    <button type="submit" class="btn btn-primary">Проверить ответы</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <!-- Навигация между уроками -->
+            <div class="d-flex justify-content-between mt-4">
+                {% if prev_lesson %}
+                <a href="{% url 'lesson_detail' course.slug prev_lesson.slug %}" class="btn btn-outline-primary">
+                    ← Предыдущий урок
+                </a>
+                {% endif %}
+                
+                {% if next_lesson %}
+                <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="btn btn-primary ms-auto">
+                    Следующий урок →
+                </a>
+                {% else %}
+                <a href="{% url 'course_detail' course.slug %}" class="btn btn-success ms-auto">
+                    Завершить курс
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Боковая панель -->
+        <div class="col-lg-4">
+            <div class="card sticky-top" style="top: 20px;">
+                <div class="card-header bg-light">
+                    <h4>Содержание урока</h4>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for content in contents %}
+                    <a href="#content-{{ content.id }}" 
+                       class="list-group-item list-group-item-action">
+                        {{ content.title }}
+                        <small class="text-muted d-block">
+                            {{ content.get_content_type_display }}
+                        </small>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

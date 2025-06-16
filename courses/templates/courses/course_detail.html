@@ -1,0 +1,78 @@
+{% extends 'main_page/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Основная информация -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                {% if course.image %}
+                <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h1 class="card-title">{{ course.title }}</h1>
+                    <p class="text-muted">Преподаватель: {{ course.instructor.get_full_name }}</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="badge bg-primary">{{ course.get_level_display }}</span>
+                        <span class="text-warning">
+                            <i class="fas fa-star"></i> {{ course.average_rating|default:"Нет оценок" }}
+                        </span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3>Описание курса</h3>
+                        <p>{{ course.description }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Отзывы -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Отзывы</h3>
+                </div>
+                <div class="card-body">
+                    {% for review in reviews %}
+                    <div class="mb-3">
+                        <strong>{{ review.user.username }}</strong>
+                        <div class="text-warning">
+                            {% for _ in "12345" %}
+                            <i class="fas fa-star{% if forloop.counter > review.rating %}-empty{% endif %}"></i>
+                            {% endfor %}
+                        </div>
+                        <p>{{ review.comment }}</p>
+                    </div>
+                    {% empty %}
+                    <p>Пока нет отзывов. Будьте первым!</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Боковая панель с уроками -->
+        <div class="col-lg-4">
+            <div class="card sticky-top" style="top: 20px;">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Уроки курса</h3>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for lesson in lessons %}
+                    <a href="{% url 'lesson_detail' course.slug lesson.slug %}" 
+                       class="list-group-item list-group-item-action {% if forloop.first %}active{% endif %}">
+                        <div class="d-flex justify-content-between">
+                            <span>Урок {{ forloop.counter }}: {{ lesson.title }}</span>
+                            <span class="text-muted">{{ lesson.duration }} мин</span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-success w-100">Начать обучение</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

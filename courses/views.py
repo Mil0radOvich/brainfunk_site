@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
-from .models import Course, Category, Author, Partner, Review
+from .models import Course, Category, Author, Partner, Review, Course, Lesson, LessonContent
 from django.db.models import Count, Avg
 
 class CourseListView(ListView):
@@ -68,3 +68,54 @@ def authors_view(request):
 def partners_view(request):
     partners = Partner.objects.all()
     return render(request, 'courses/partners.html', {'partners': partners})
+
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = 'courses/course_detail.html'
+    context_object_name = 'course'
+    slug_url_kwarg = 'course_slug'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['lessons'] = self.object.lessons.all().order_by('order')
+        context['reviews'] = self.object.reviews.select_related('user')
+        return context
+
+def lesson_detail(request, course_slug, lesson_slug):
+    course = get_object_or_404(Course, slug=course_slug)
+    lesson = get_object_or_404(Lesson, slug=lesson_slug, course=course)
+    
+    # Получаем список уроков для навигации
+    lessons_list = list(course.lessons.all().order_by('order'))
+    current_index = lessons_list.index(lesson)
+    
+    return render(request, 'courses/lesson_detail.html', {
+        'course': course,
+        'lesson': lesson,
+        'prev_lesson': lessons_list[current_index-1] if current_index > 0 else None,
+        'next_lesson': lessons_list[current_index+1] if current_index < len(lessons_list)-1 else None,
+    })
+
+
+def lesson_detail(request, course_slug, lesson_slug):
+    course = get_object_or_404(Course, slug=course_slug)
+    lesson = get_object_or_404(Lesson, slug=lesson_slug, course=course)
+    
+    # Получаем все компоненты урока
+    contents = lesson.contents.all().prefetch_related(
+        'text_content',
+        'video_content',
+        'code_task',
+        'quiz__questions__options'
+    ).order_by('order')
+    
+    lessons_list = list(course.lessons.all().order_by('order'))
+    current_index = lessons_list.index(lesson)
+    
+    return render(request, 'courses/lesson_detail.html', {
+        'course': course,
+        'lesson': lesson,
+        'contents': contents,
+        'prev_lesson': lessons_list[current_index-1] if current_index > 0 else None,
+        'next_lesson': lessons_list[current_index+1] if current_index < len(lessons_list)-1 else None,
+    })
