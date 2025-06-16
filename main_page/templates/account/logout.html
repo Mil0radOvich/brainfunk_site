@@ -1,0 +1,31 @@
+{% extends "main_page/base.html" %}
+{% block content %}
+
+<div class="login-container">
+    <h1 align=center>Выход из системы</h1>
+    <p align=center>Вы действительно хотите выйти?</p>
+    <form method="post" class="logout-form" style="text-align: center;">
+        {% csrf_token %}
+        <button type="submit" style="margin-right: 10px;">Да, выйти</button>
+        <a href="{% url 'account_login' %}" class="stay-button">Нет, остаться</a>
+    </form>
+</div>
+
+<style>
+    .stay-button {
+        display: inline-block;
+        padding: 8px 12px;
+        background-color:rgb(243, 243, 243); /* Цвет фона */
+        color: rgb(198, 130, 196); /* Цвет текста */
+        text-decoration: none; /* Убираем подчеркивание */
+        border-radius: 4px; /* Закругленные углы */
+    }
+
+    .stay-button:hover {
+        background-color:rgb(198, 130, 196); /* Цвет фона при наведении */
+        color: rgb(243, 243, 243);
+    }
+</style>
+
+{% endblock %}
+
