@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     courses = [
@@ -21,3 +22,7 @@ def contact(request):
 
 def courses_catalog(request):
     return render(request, 'main_page/courses_catalog.html', {'title': 'Каталог курсов'})
+
+@login_required
+def profile(request):
+    return render(request, 'main_page/profile.html')
