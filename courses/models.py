@@ -31,7 +31,11 @@ class Course(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     duration = models.PositiveIntegerField(help_text="Duration in hours")
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='beginner')
-    image = models.ImageField(upload_to='courses/')
+    image = models.ImageField(
+    upload_to='courses/',  # папка для сохранения
+    blank=True,  # необязательное поле
+    null=True   # может быть NULL в БД
+    )
     is_featured = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

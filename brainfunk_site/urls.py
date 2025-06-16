@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from main_page import views as main_views
 from courses.views import CourseListView, CourseDetailView, authors_view, partners_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,5 +35,4 @@ urlpatterns = [
     path('courses/<slug:course_slug>/', CourseDetailView.as_view(), name='course_detail'),
     path('courses/authors/', authors_view, name='authors'),
     path('courses/partners/', partners_view, name='partners'),
-]
-
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
