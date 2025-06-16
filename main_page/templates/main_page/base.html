@@ -186,6 +186,24 @@
                             <a class="nav-link" href="/courses_catalog">Каталог курсов</a>
                         </li>
                     </ul>
+
+                    <ul class="navbar-nav ms-auto">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile">{{ user.username }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/logout">Выйти</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/login">Войти</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/signup">Регистрация</a>
+                            </li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
         </nav>
