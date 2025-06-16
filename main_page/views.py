@@ -23,6 +23,7 @@ def contact(request):
 def courses_catalog(request):
     return render(request, 'main_page/courses_catalog.html', {'title': 'Каталог курсов'})
 
+
 @login_required
 def profile(request):
     return render(request, 'main_page/profile.html')
