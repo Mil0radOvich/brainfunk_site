@@ -20,6 +20,146 @@
                 padding: 4rem 0;
                 margin-bottom: 2rem;
             }
+
+           
+            .signup-container {
+                max-width: 400px;
+                margin: 20px auto;
+                padding: 20px;
+                background-color:rgb(222, 182, 226);
+                border-radius: 8px;
+                box-sizing: border-box; /* Учитывает padding и border в ширине и высоте */
+            }
+
+            .signup-container h1 {
+                font-size: 34px; /* Уменьшите размер шрифта, если необходимо */
+                margin-top: 0; /* Уберите верхний отступ, если он есть */
+                word-wrap: break-word; /* Перенос слов, если текст слишком длинный */
+                text-align: center; /* Центрирование текста */
+            }
+
+            /* Остальные стили остаются без изменений */
+            .auth-menu {
+                display: flex;
+                justify-content: space-around;
+                margin-bottom: 20px;
+            }
+
+            .auth-menu a {
+                text-decoration: none;
+                color: #007bff;
+                font-weight: bold;
+                padding: 5px 10px;
+            }
+
+            .signup-form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box; /* Учитывает padding и border в ширине и высоте */
+            }
+
+            .password-help-text {
+                font-size: 12px;
+                color: #666;
+                margin-top: 5px;
+                padding-left: 5px;
+            }
+
+            .error-message {
+                color: red;
+                font-size: 12px;
+                margin-top: 5px;
+            }
+
+            button {
+                background-color:rgb(74, 0, 70);
+                color: white;
+                padding: 10px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-top: 10px;
+            }
+
+            button:hover {
+                background-color:rgb(119, 0, 134);
+            }
+            
+
+            .login-container {
+                max-width: 400px;
+                margin: 20px auto; /* Отступы сверху и снизу, центрирование по горизонтали */
+                padding: 20px; /* Внутренние отступы */
+                background-color:rgb(222, 182, 226); /* Цвет фона */
+                border-radius: 8px; /* Скругленные углы */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Тень для улучшения визуального эффекта */
+                box-sizing: border-box; /* Учитывает padding и border в ширине и высоте */
+            }
+
+            .login-container h1 {
+                font-size: 34px; /* Уменьшите размер шрифта, если необходимо */
+                margin-top: 0; /* Уберите верхний отступ, если он есть */
+                word-wrap: break-word; /* Перенос слов, если текст слишком длинный */
+                text-align: center; /* Центрирование текста */
+                margin-bottom: 20px;
+            }
+
+            .login-form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .form-group {
+                margin-bottom: 20px; /* Отступ снизу для каждой группы формы */
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px; /* Отступ снизу для меток */
+                font-weight: bold;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px; /* Внутренние отступы для полей ввода */
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box; /* Учитывает padding и border в ширине и высоте */
+            }
+
+            button {
+                background-color: rgb(74, 0, 70); /* Синий цвет для кнопки входа */
+                color: white;
+                padding: 10px; /* Внутренние отступы */
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-top: 10px; /* Отступ сверху */
+            }
+
+            button:hover {
+                background-color: rgb(119, 0, 134); /* Темнее синий цвет при наведении */
+            }
+
         </style>
     </head>
 
@@ -45,6 +185,24 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'course_list' %}">Каталог курсов</a>
                         </li>
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile">{{ user.username }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/logout">Выйти</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/login">Войти</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/signup">Регистрация</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
